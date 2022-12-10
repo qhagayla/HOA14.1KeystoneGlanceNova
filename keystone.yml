@@ -1,0 +1,35 @@
+---
+
+- hosts: keystone_servers
+  become: true
+  tasks:
+
+  - name: Install Mariadb Package (Ubuntu)
+    tags: mariadb
+    apt:
+      name: mariadb-server
+      state: latest
+    when: ansible_distribution == "Ubuntu"
+
+  - name: "Mariadb - Restarting/Enabling"
+    service:
+      name: mariadb
+      state: restarted
+      enabled: true
+
+  - name: Install Apache and PHP for Ubuntu server
+    tags: apache,php
+    apt:
+      name:
+        - apache2
+        - libapache2-mod-php
+      state: latest
+      update_cache: yes
+    when: ansible_distribution == "Ubuntu"
+
+  - name: Install Keystone Package (Ubuntu)
+    tags: keystone
+    apt:
+      name: keystone
+      state: latest
+    when: ansible_distribution == "Ubuntu"

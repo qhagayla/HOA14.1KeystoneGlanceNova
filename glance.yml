@@ -1,0 +1,12 @@
+---
+
+- hosts: glance_servers
+  become: true
+  tasks:
+
+  - name: Install Glance Package (Ubuntu)
+    tags: glance
+    apt:
+      name: glance
+      state: latest
+    when: ansible_distribution == "Ubuntu"
